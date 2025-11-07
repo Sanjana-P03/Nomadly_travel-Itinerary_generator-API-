@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
 
-  base: '/Nomadly_travel-Itinerary-API-/',
+  base: 'Nomadly_travel-Itinerary_generator-API-',
   
   optimizeDeps: {
     exclude: ['lucide-react'],

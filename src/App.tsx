@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Layout } from './components/Layout';
 import { AuthForm } from './components/AuthForm';
+import { LandingPage } from './components/LandingPage';
 import { PlannerForm } from './components/PlannerForm';
 import { ItineraryDisplay } from './components/ItineraryDisplay';
 import { SavedItineraries } from './components/SavedItineraries';
@@ -14,6 +15,8 @@ import { Itinerary, Destination } from './types';
 
 function App() {
   const { user, loading: authLoading } = useAuth();
+  const [showAuthForm, setShowAuthForm] = useState(false);
+  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
   const [currentItinerary, setCurrentItinerary] = useState<Itinerary | null>(null);
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -167,16 +170,29 @@ Total Trip Cost: ${currencySymbol}${currentItinerary.day_plans.reduce((sum, day)
     setCurrentItinerary(null);
   };
 
+  const handleSignUpClick = () => {
+    setAuthMode('signup');
+    setShowAuthForm(true);
+  };
+
+  const handleSignInClick = () => {
+    setAuthMode('signin');
+    setShowAuthForm(true);
+  };
+
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-orange-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-600"></div>
       </div>
     );
   }
 
   if (!user) {
-    return <AuthForm />;
+    if (showAuthForm) {
+      return <AuthForm initialMode={authMode} onBack={() => setShowAuthForm(false)} />;
+    }
+    return <LandingPage onSignUp={handleSignUpClick} onSignIn={handleSignInClick} />;
   }
 
   return (

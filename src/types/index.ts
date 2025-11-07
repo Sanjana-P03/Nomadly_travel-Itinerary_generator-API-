@@ -69,7 +69,4 @@ export interface PlacesSuggestion {
     main_text: string;
     secondary_text: string;
   };
-  lat?: number;
-  lng?: number;
-  provider?: 'nominatim' | 'google';
 }

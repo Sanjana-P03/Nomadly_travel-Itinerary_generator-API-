@@ -1,9 +1,18 @@
-import React, { useState } from 'react';
-import { Mail, Lock, User, Flower } from 'lucide-react'; 
+import React, { useState, useEffect } from 'react';
+import { Mail, Lock, User, Flower, ArrowLeft } from 'lucide-react'; 
 import { useAuth } from '../hooks/useAuth';
 
-export function AuthForm() {
-  const [isSignUp, setIsSignUp] = useState(false);
+interface AuthFormProps {
+  initialMode?: 'signin' | 'signup';
+  onBack?: () => void;
+}
+
+export function AuthForm({ initialMode = 'signin', onBack }: AuthFormProps) {
+  const [isSignUp, setIsSignUp] = useState(initialMode === 'signup');
+  
+  useEffect(() => {
+    setIsSignUp(initialMode === 'signup');
+  }, [initialMode]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
@@ -35,6 +44,15 @@ export function AuthForm() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-pink-50 via-white to-orange-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
+        {onBack && (
+          <button
+            onClick={onBack}
+            className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors mb-4"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span>Back to Home</span>
+          </button>
+        )}
         <div className="text-center">
           {/* Cute flower + smiley circle */}
           <div className="mx-auto h-16 w-16 bg-gradient-to-r from-pink-500 via-rose-400 to-orange-400 rounded-lg flex items-center justify-center shadow-md">
